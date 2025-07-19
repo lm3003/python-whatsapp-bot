@@ -2,6 +2,7 @@ import logging
 from flask import current_app, jsonify
 import json
 import requests
+from start.langgraph_agent import generate_response
 
 # from app.services.openai_service import generate_response
 import re
@@ -25,9 +26,9 @@ def get_text_message_input(recipient, text):
     )
 
 
-def generate_response(response):
-    # Return text in uppercase
-    return response.upper()
+# def generate_response(response):
+#     # Return text in uppercase
+#     return response.upper()
 
 
 def send_message(data):
@@ -82,12 +83,13 @@ def process_whatsapp_message(body):
     message = body["entry"][0]["changes"][0]["value"]["messages"][0]
     message_body = message["text"]["body"]
 
-    # TODO: implement custom function here
+    # langgraph agent integration
     response = generate_response(message_body)
+    # response = generate_response(message_body)
 
-    # OpenAI Integration
-    # response = generate_response(message_body, wa_id, name)
-    # response = process_text_for_whatsapp(response)
+    # # OpenAI Integration
+    # # response = generate_response(message_body, wa_id, name)
+    # # response = process_text_for_whatsapp(response)
 
     data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
     send_message(data)

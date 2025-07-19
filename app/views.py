@@ -58,7 +58,10 @@ def handle_message():
 def verify():
     # Parse params from the webhook verification request
     mode = request.args.get("hub.mode")
+    logging.info(mode)
     token = request.args.get("hub.verify_token")
+    logging.info(token)
+    logging.info(current_app.config["VERIFY_TOKEN"])
     challenge = request.args.get("hub.challenge")
     # Check if a token and mode were sent
     if mode and token:
